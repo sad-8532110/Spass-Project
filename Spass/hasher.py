@@ -1,4 +1,5 @@
 from hashlib import *
+import os
 
 #--------------------------------------- CLASS  AND FUNCTIONS
 
@@ -18,39 +19,55 @@ class hashing:
                                'sha3_384': sha3_384,
                                'sha3_512': sha3_512,
                                'blake2b': blake2b,
-                               'blake2s': blake2s}
+                               'blake2s': blake2s} 
+        self.__algorithm_keys = list(self.__hashes_class.keys())
+
 
     def start(self):
         print('start hashing passwords:\n')
 
         self.__password = input('Please enter your password: ')
-        algorithms = input('Please enter your hash algorithms: ')
-        
-        if not algorithms or algorithms == 'all' or algorithms == 'ALL':
-            self.__algorithms = ['md5',
-                                 'sha1',
-                                 'sha224',
-                                 'sha256',
-                                 'sha384',
-                                 'sha512',
-                                 'sha3_224',
-                                 'sha3_256',
-                                 'sha3_384',
-                                 'sha3_512',
-                                 'blake2b',
-                                 'blake2s']
 
+        print("Select Your hashing method:\n")
+
+        for i, name in enumerate(self.__algorithm_keys, start=1):
+            print(f"{i:2}. {name}")
+
+        print("\nSeparate them with comma.")
+
+        algorithms = input(
+            "Please enter your hash algorithms: "
+        ).strip()
+
+        if not algorithms or algorithms.lower() == "all":
+            self.__algorithms = self.__algorithm_names.copy()
         else:
-            for char in algorithms:
-                if char == ' ':
-                    continue
-                self.__algorithms += char
-            self.__algorithms = self.__algorithms.split(',')
+            selected = []
+
+            for item in algorithms.split(","):
+                item = item.strip()
+
+                if item.isdigit():
+                    index = int(item) - 1
+
+                    if 0 <= index < len(self.__algorithm_keys):
+                        selected.append(self.__algorithm_keys[index])
+                    else:
+                        print(f"Unknown number: {item}")
+
+                elif item in self.__hashes_class:
+                    selected.append(item)
+
+                else:
+                    print(f"Unknown algorithm: {item}")
+
+        self.__algorithms = list(dict.fromkeys(selected))
 
         self.__make_hashed_password()
 
     def __make_hashed_password(self):
         print()
+        os.makedirs('Spass/history', exist_ok=True)  # create dir if it's missing
         file = open('Spass/history/hashed passwords.txt', 'a')
         encoded_password = self.__password.encode()
         for algorithm in self.__algorithms:
