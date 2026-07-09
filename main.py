@@ -50,7 +50,7 @@ Please choose one of these options:\n'''
             self.help()
 
         else:
-            exit_choice = input('Do you want to exit (y / n): ').lower()
+            exit_choice = input('Do you want to exit [y/N]: ').lower()
             if exit_choice == 'y' or exit_choice == 'yes':
                 return False
             
