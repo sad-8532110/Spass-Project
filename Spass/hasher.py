@@ -1,4 +1,5 @@
 from hashlib import *
+import os
 
 #--------------------------------------- CLASS  AND FUNCTIONS
 
@@ -51,6 +52,7 @@ class hashing:
 
     def __make_hashed_password(self):
         print()
+        os.makedirs('Spass/history', exist_ok=True)  # create dir if it's missing
         file = open('Spass/history/hashed passwords.txt', 'a')
         encoded_password = self.__password.encode()
         for algorithm in self.__algorithms:
