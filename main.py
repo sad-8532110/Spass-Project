@@ -82,6 +82,7 @@ the algorithm of hashing:
 
 #--------------------------------------- PROGRAM
 
-if __name__ == '__main__':
-    obj = main()
-    obj.run_program()
+if __name__ == "__main__":
+    if not check_cli_args():
+        obj = main()
+        obj.run_program()
