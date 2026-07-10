@@ -5,7 +5,7 @@ from datetime import datetime
 
 class cracking_password:
     def __init__(self):
-        self.__password_list = ''
+        self.__password_list = 'password lists//password list.txt'
         self.__hash_password = ''
         self.__hash_algorithms = ''
         self.__passwords = None
@@ -53,25 +53,26 @@ class cracking_password:
             self.__hash_algorithms = self.__hash_algorithms.split(',')
 
 
-        mode = self.__check_file()
-        if mode:
-            self.__crack_password()
-        
+        self.__check_file()
+        self.__crack_password()
         self.__init__()
 
     def __check_file(self):
-        choice = input('Is your password list "password list.txt" (y / n): ').lower()
-        if choice == 'y' or choice == 'yes':
-            self.__password_list = 'password lists//password list.txt'
-
-        elif choice == 'n' or choice == 'no':
+        choice = input('Is your password list "password list.txt" ([Y]/n): ').lower()
+        if choice == 'n' or choice == 'no':
             self.__password_list = input('Please enter your password list path: ')
-
-        else:
-            return False
-
-        return True
     
+    def cli_i(self, args):
+        try:
+            self.__hash_password = args['hash']
+            self.__hash_algorithms = [i.strip() for i in self.__hash_algorithms.split(',')]
+            if 'file' in args:
+                self.__password_list = args['file']
+            self.__crack_password()
+        
+        except KeyError:
+            print('Unknown arg')
+        
     def __read_file(self):
         try:
             with open(self.__password_list, 'rb') as FILE:
