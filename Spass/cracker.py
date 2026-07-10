@@ -61,7 +61,7 @@ class cracking_password:
         choice = input('Is your password list "password list.txt" ([Y]/n): ').lower()
         if choice == 'n' or choice == 'no':
             self.__password_list = input('Please enter your password list path: ')
-    
+    '''
     def cli_i(self, args):
         try:
             self.__hash_password = args['hash']
@@ -72,7 +72,7 @@ class cracking_password:
         
         except KeyError:
             print('Unknown arg')
-        
+    '''
     def __read_file(self):
         try:
             with open(self.__password_list, 'rb') as FILE:
